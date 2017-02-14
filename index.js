@@ -52,7 +52,7 @@ function Bump() {
          return result;
       },
 
-      set: function (config) {
+      set: function (config, callback) {
          let newVer = null;
          if (config.singleVersion && config.setversion) {
             config.version = config.setversion;
@@ -152,7 +152,7 @@ function Bump() {
             });
             stream.on('end', () => {
                console.log(chalk.white("##########################################################################"));
-
+               if(callback) callback(config.version);
                this.pluginMessage();
             });
 
@@ -170,7 +170,7 @@ function Bump() {
    };
 
    return {
-      run: function (input) {
+      run: function (input, callback) {
          let config = self.appendArgs(input);
 
          if (!config.hasOwnProperty('bumpType'))
@@ -194,7 +194,7 @@ function Bump() {
             self.configXml = './config.xml';
          }
 
-         return self.set(config);
+         return self.set(config, callback);
       },
 
       help: function () {
